@@ -1,16 +1,7 @@
 import { useState } from 'react'
+import { compute, OperationKey } from './calc'
 import { Button } from './components/Button'
 import { Display } from './components/Display'
-
-const operations = {
-  '/': (left: number, right: number) => left / right,
-  x: (left: number, right: number) => left * right,
-  '-': (left: number, right: number) => left - right,
-  '+': (left: number, right: number) => left + right,
-  '%': (left: number, right: number) => (right / 100) * left,
-}
-
-type OperationKey = keyof typeof operations
 
 function App() {
   const [currentValue, setCurrentValue] = useState(0)
@@ -20,8 +11,6 @@ function App() {
   const [operation, setOperation] = useState<string | null>(null)
 
   function processInput(input: string) {
-    console.log('processInput: ' + input)
-
     if (label === '0' || preClear) {
       setCurrentValue(Number(label))
       setLabel(input)
@@ -32,25 +21,21 @@ function App() {
   }
 
   function processCommand(command: string) {
-    console.log('processCommand: ' + command)
-
     if (command === '=') {
       if (operation === null) {
         return
       }
 
-      console.log('doing: ' + operation)
       const newValue = Number(label)
-      console.log('values => left = ' + currentValue + '; right = ' + newValue)
+
       const computed = compute(
         currentValue,
         newValue,
         operation as OperationKey
       )
 
-      console.log(computed)
       setCurrentValue(computed)
-      console.log(currentValue)
+
       setLabel(computed.toString())
 
       setOperation(null)
@@ -59,7 +44,7 @@ function App() {
     } else {
       if (command === 'negate') {
         const value = Number(label)
-        console.log('negating... ' + value)
+
         const negatedValue = value * -1
         setLabel(negatedValue.toString())
       } else {
@@ -71,21 +56,11 @@ function App() {
   }
 
   function clear() {
-    console.log('clear')
-
     setCurrentValue(0)
     setOperation(null)
     setLabel('0')
     setStatus('')
     setPreClear(false)
-  }
-
-  function compute(left: number, right: number, operation: OperationKey) {
-    if (operation in operations) {
-      return operations[operation](left, right)
-    }
-
-    return 0
   }
 
   return (
