@@ -3,7 +3,6 @@ const operations = {
   x: (left: number, right: number) => left * right,
   '-': (left: number, right: number) => left - right,
   '+': (left: number, right: number) => left + right,
-  '%': (left: number, right: number) => (right / 100) * left,
 }
 
 export type OperationKey = keyof typeof operations

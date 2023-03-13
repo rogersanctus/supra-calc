@@ -43,6 +43,18 @@ function App() {
       const negatedValue = value * -1
       setLabel(negatedValue.toString())
     },
+    '%': function () {
+      let newValue = 0
+      const percentual = Number(label)
+
+      if (operation === '-' || operation === '+') {
+        newValue = currentValue * (percentual / 100)
+      } else if (operation === 'x' || operation === '/') {
+        newValue = percentual / 100
+      }
+
+      setLabel(newValue.toString())
+    },
   }
 
   function processInput(input: string) {
