@@ -4,6 +4,10 @@ import { Button } from './components/Button'
 import { CalcButton } from './components/CalcButton'
 import { Display } from './components/Display'
 
+type SpecialCommands = {
+  [key: string]: () => void
+}
+
 function App() {
   const [currentValue, setCurrentValue] = useState(0)
   const [label, setLabel] = useState('0')
@@ -11,18 +15,8 @@ function App() {
   const [preClear, setPreClear] = useState(false)
   const [operation, setOperation] = useState<string | null>(null)
 
-  function processInput(input: string) {
-    if (label === '0' || preClear) {
-      setCurrentValue(Number(label))
-      setLabel(input)
-      setPreClear(false)
-    } else {
-      setLabel(label + input)
-    }
-  }
-
-  function processCommand(command: string) {
-    if (command === '=') {
+  const specialCommands: SpecialCommands = {
+    '=': function () {
       if (operation === null) {
         return
       }
@@ -42,17 +36,32 @@ function App() {
       setOperation(null)
       setStatus('')
       setPreClear(true)
-    } else {
-      if (command === 'negate') {
-        const value = Number(label)
+    },
+    negate: function () {
+      const value = Number(label)
 
-        const negatedValue = value * -1
-        setLabel(negatedValue.toString())
-      } else {
-        setOperation(command)
-        setStatus(command)
-        setPreClear(true)
-      }
+      const negatedValue = value * -1
+      setLabel(negatedValue.toString())
+    },
+  }
+
+  function processInput(input: string) {
+    if (label === '0' || preClear) {
+      setCurrentValue(Number(label))
+      setLabel(input)
+      setPreClear(false)
+    } else {
+      setLabel(label + input)
+    }
+  }
+
+  function processCommand(command: string) {
+    if (command in specialCommands) {
+      specialCommands[command]()
+    } else {
+      setOperation(command)
+      setStatus(command)
+      setPreClear(true)
     }
   }
 
