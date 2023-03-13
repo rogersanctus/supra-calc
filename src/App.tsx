@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { compute, OperationKey } from './calc'
 import { Button } from './components/Button'
+import { CalcButton } from './components/CalcButton'
 import { Display } from './components/Display'
 
 function App() {
@@ -68,26 +69,24 @@ function App() {
       <Display status={status} value={label} />
       <div className="grid grid-cols-4 gap-1 mt-4">
         <Button onClick={clear}>AC</Button>
-        <Button onClick={() => processCommand('negate')}>+/-</Button>
-        <Button onClick={() => processCommand('%')}>%</Button>
-        <Button onClick={() => processCommand('/')}>/</Button>
-        <Button onClick={() => processInput('7')}>7</Button>
-        <Button onClick={() => processInput('8')}>8</Button>
-        <Button onClick={() => processInput('9')}>9</Button>
-        <Button onClick={() => processCommand('x')}>x</Button>
-        <Button onClick={() => processInput('4')}>4</Button>
-        <Button onClick={() => processInput('5')}>5</Button>
-        <Button onClick={() => processInput('6')}>6</Button>
-        <Button onClick={() => processCommand('-')}>-</Button>
-        <Button onClick={() => processInput('1')}>1</Button>
-        <Button onClick={() => processInput('2')}>2</Button>
-        <Button onClick={() => processInput('3')}>3</Button>
-        <Button onClick={() => processCommand('+')}>+</Button>
-        <Button className="col-span-2" onClick={() => processInput('0')}>
-          0
-        </Button>
-        <Button onClick={() => processInput('.')}>.</Button>
-        <Button onClick={() => processCommand('=')}> =</Button>
+        <CalcButton onProcess={processCommand} value="negate" label="+/-" />
+        <CalcButton onProcess={processCommand} value="%" />
+        <CalcButton onProcess={processCommand} value="/" />
+        <CalcButton onProcess={processInput} value="7" />
+        <CalcButton onProcess={processInput} value="8" />
+        <CalcButton onProcess={processInput} value="9" />
+        <CalcButton onProcess={processCommand} value="x" />
+        <CalcButton onProcess={processInput} value="4" />
+        <CalcButton onProcess={processInput} value="5" />
+        <CalcButton onProcess={processInput} value="6" />
+        <CalcButton onProcess={processCommand} value="-" />
+        <CalcButton onProcess={processInput} value="1" />
+        <CalcButton onProcess={processInput} value="2" />
+        <CalcButton onProcess={processInput} value="3" />
+        <CalcButton onProcess={processCommand} value="+" />
+        <CalcButton className="col-span-2" onProcess={processInput} value="0" />
+        <CalcButton onProcess={processInput} value="." />
+        <CalcButton onProcess={processCommand} value="=" />
       </div>
     </div>
   )
